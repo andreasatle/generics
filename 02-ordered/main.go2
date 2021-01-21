@@ -2,31 +2,12 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/andreasatle/generics/02-ordered/minmax"
 )
 
-type Ordered interface {
-	type int, int8, int16, int32, int64,
-		uint, uint8, uint16, uint32, uint64,
-		float32, float64,
-		string
-}
-
-func Min[T Ordered](s, t T) T {
-	if s <= t {
-		return s
-	}
-	return t
-}
-
-func Max[T Ordered](s, t T) T {
-	if s >= t {
-		return s
-	}
-	return t
-}
-
 func main() {
-	fmt.Println(Min(7, 4), Min(7.5, 4.5))
-	fmt.Println(Max(7, 4), Max(7.5, 4.5))
-	fmt.Println(Min("ABC", "abc"), Max("ABC", "abc"))
+	fmt.Println(minmax.Min(7, 4), minmax.Min(7.5, 4.5))
+	fmt.Println(minmax.Max(7, 4), minmax.Max(7.5, 4.5))
+	fmt.Println(minmax.Min("ABC", "abc"), minmax.Max("ABC", "abc"))
 }
