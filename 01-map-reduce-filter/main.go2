@@ -2,73 +2,52 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/andreasatle/generics/01-map-reduce-filter/mrf"
 )
-
-// Map implements a generic map operation.
-func Map[T1, T2 any](s []T1, f func(T1) T2) []T2 {
-	r := make([]T2, len(s))
-	for i, v := range s {
-		r[i] = f(v)
-	}
-	return r
-}
-
-// Reduce implements a generic reduce operation.
-func Reduce[T1, T2 any](s []T1, initializer T2, f func(T2, T1) T2) T2 {
-	r := initializer
-	for _, v := range s {
-		r = f(r,v)
-	}
-	return r
-}
-
-// Filter implements a generic filter operation.
-func Filter[T any](s []T, f func(T) bool) []T {
-	var r []T
-	for _, v := range s {
-		if (f(v)) {
-			r = append(r, v)
-		}
-	}
-	return r
-}
 
 func main() {
 	// Local functions
 	intToFloat32 := func(i int) float32 { return float32(i) }
 	intToFloat64 := func(i int) float64 { return float64(i) }
 
-	intSum := func(a, b int) int { return a+b }
-	intProduct := func(a, b int) int { return a*b }
-	concat := func(a, b string) string { return a+b }
+	intSum := func(a, b int) int { return a + b }
+	intProduct := func(a, b int) int { return a * b }
+	concat := func(a, b string) string { return a + b }
 
-	parity := func(i int) int { var r = i%2; if r >= 0 { return r }; return r+2 }
+	parity := func(i int) int {
+		var r = i % 2
+		if r >= 0 {
+			return r
+		}
+		return r + 2
+	}
 	isOdd := func(i int) bool { return parity(i) == 1 }
 	isEven := func(i int) bool { return parity(i) == 0 }
 
 	s := []int{-3, -2, -1, 1, 2, 3, 4, 5}
 
 	fmt.Printf("Array: \n%v, %T\n\n", s, s)
-	
-	float32s := Map(s, intToFloat32)
-	float64s := Map(s, intToFloat64)
-	fmt.Printf("Mapped arrays:\n%v, %T\n%v, %T\n\n", 
+
+	float32s := mrf.Map(s, intToFloat32)
+	float64s := mrf.Map(s, intToFloat64)
+	fmt.Printf("Mapped arrays:\n%v, %T\n%v, %T\n\n",
 		float32s, float32s, float64s, float64s)
 
-	pari := Map(s, parity)
+	pari := mrf.Map(s, parity)
 	fmt.Println("Mapped Parity: ", pari, "\n")
 
-	sum := Reduce(s, 0, intSum)
-	prod := Reduce(s, 1, intProduct)
+	sum := mrf.Reduce(s, 0, intSum)
+	prod := mrf.Reduce(s, 1, intProduct)
 	fmt.Printf("Reduced Sum: %d\nReduced Product: %d\n\n", sum, prod)
 
-	odd := Filter(s, isOdd)
-	even := Filter(s, isEven)
+	odd := mrf.Filter(s, isOdd)
+	even := mrf.Filter(s, isEven)
 	fmt.Printf("Filtered Odd: %v\n", odd)
 	fmt.Printf("Filtered Even: %v\n\n", even)
 
 	str := []string{"foo", "bar", "bo", "ek"}
-	c := Reduce(str, "", concat)
+	c := mrf.Reduce(str, "", concat)
 	fmt.Println("Input strings:", str)
 	fmt.Println("Reduced string:", c, "\n")
 }
