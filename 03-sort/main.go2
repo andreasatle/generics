@@ -2,33 +2,18 @@ package main
 
 import (
 	"fmt"
-	"sort"
+
+	"github.com/andreasatle/generics/03-sort/gsort"
 )
-type Ordered interface {
-	type int, int8, int16, int32, int64,
-		uint, uint8, uint16, uint32, uint64,
-		float32, float64,
-		string
-}
-
-type orderedSlice[T Ordered] []T
-
-func (s orderedSlice[T]) Len() int {return len(s)}
-func (s orderedSlice[T]) Less(i, j int) bool {return s[i] < s[j]}
-func (s orderedSlice[T]) Swap(i, j int) {s[i], s[j] = s[j], s[i]}
-
-func OrderedSlice[T Ordered](s []T) {
-	sort.Sort(orderedSlice[T](s))
-}
 
 func main() {
-	ii := []int{7,4,2,3,7,9}
+	ii := []int{7, 4, 2, 3, 7, 9}
 	fmt.Println("Initial slice of ints:", ii)
-	OrderedSlice(ii)
+	gsort.OrderedSlice(ii)
 	fmt.Println("Sorted  slice of ints:", ii)
 
 	ss := []string{"abc", "bca", "acb", "cba", "cab", "bac"}
 	fmt.Println("Initial slice of strings:", ss)
-	OrderedSlice(ss)
+	gsort.OrderedSlice(ss)
 	fmt.Println("Sorted  slice of strings:", ss)
 }

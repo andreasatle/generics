@@ -1,0 +1,21 @@
+package gsort
+
+import "sort"
+
+type Ordered interface {
+	type int, int8, int16, int32, int64,
+		uint, uint8, uint16, uint32, uint64,
+		float32, float64,
+		string
+}
+
+type orderedSlice[T Ordered] []T
+
+func (s orderedSlice[T]) Len() int {return len(s)}
+func (s orderedSlice[T]) Less(i, j int) bool {return s[i] < s[j]}
+func (s orderedSlice[T]) Swap(i, j int) {s[i], s[j] = s[j], s[i]}
+
+func OrderedSlice[T Ordered](s []T) {
+	sort.Sort(orderedSlice[T](s))
+}
+
