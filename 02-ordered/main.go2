@@ -11,7 +11,7 @@ type foo int
 func main() {
 	fmt.Println(minmax.Min(7, 4), minmax.Min(7.5, 4.5))
 	fmt.Println(minmax.Max(7, 4), minmax.Max(7.5, 4.5))
-	fmt.Println(minmax.Min("ABC", "abc"), minmax.Max("ABC", "abc"))
+	fmt.Println(minmax.Min("cba", "abc"), minmax.Max("cba", "abc"))
 
 	// check that generics work with the "underlying" type int
 	f1, f2 := foo(5), foo(7)
