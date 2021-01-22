@@ -6,8 +6,15 @@ import (
 	"github.com/andreasatle/generics/02-ordered/minmax"
 )
 
+type foo int
+
 func main() {
 	fmt.Println(minmax.Min(7, 4), minmax.Min(7.5, 4.5))
 	fmt.Println(minmax.Max(7, 4), minmax.Max(7.5, 4.5))
 	fmt.Println(minmax.Min("ABC", "abc"), minmax.Max("ABC", "abc"))
+
+	// check that generics work with the "underlying" type int
+	f1, f2 := foo(5), foo(7)
+	fmt.Println(minmax.Min(f1, f2), minmax.Max(f1, f2))
+	fmt.Printf("%T, %T\n", f1, f2)
 }
