@@ -1,0 +1,95 @@
+package set
+
+import (
+	"fmt"
+	"strings"
+)
+type Set[T comparable] map[T]struct{}
+
+// NewSet creates a new generic set.
+func NewSet[T comparable](t ...T) Set[T] {
+	s := Set[T]{}
+	for _, v := range t {
+		s[v] = struct{}{}
+	}
+	return s
+}
+
+// Copy returns a copy of the set (copy-constructor).
+func (s Set[T]) Copy() Set[T] {
+	t := Set[T]{}
+	for v := range s {
+		t.Add(v)
+	}
+	return t
+}
+
+// Add adds a new element to the set.
+func (s Set[T]) Add(v T) {
+	s[v] = struct{}{}
+}
+
+// Remove deletes an element from the set.
+func (s Set[T]) Remove(v T) {
+	delete(s, v)
+}
+
+// Contains returns true if the element is in the set.
+func (s Set[T]) Contains(v T) bool {
+	_, ok := s[v]
+	return ok
+}
+
+// Size returns the cardinality of the set.
+func (s Set[T]) Size() int {
+	return len(s)
+}
+
+// Union returns the in-place union of two sets.
+func (s Set[T]) Union(t Set[T]) {
+	for v := range t {
+		s[v] = struct{}{}
+	}
+}
+
+// Intersection returns the in-place intersection of two sets.
+func (s Set[T]) Intersection(t Set[T]) {
+	for v := range s {
+		if !t.Contains(v) {
+			s.Remove(v)
+		}
+	}
+}
+
+// Equal returns true if the sets are identical.
+func (s Set[T]) Equal(t Set[T]) bool {
+
+	// This checks eliminates the need to loop over both sets.
+	if s.Size() != t.Size() {
+		return false
+	}
+
+	for v := range s {
+		if !t.Contains(v) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// String implents the Stringer interface.
+// The output will be unsorted. If I understand correctly,
+// the comparable is bigger than Ordered (used in gsort).
+// For instance, a struct{a int, b string} is comparable
+// but not Ordered.
+func (s Set[T]) String() string {
+	n := s.Size()
+	ss := make([]string, n)
+	i := 0
+	for v := range s {
+		ss[i] = fmt.Sprintf("%v", v)
+		i++
+	}
+	return "{" + strings.Join(ss, ",") + "}"
+}

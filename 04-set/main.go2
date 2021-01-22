@@ -1,0 +1,45 @@
+package main
+
+import (
+	"fmt"
+
+	"github.com/andreasatle/generics/04-set/set"
+)
+
+type foo struct {
+	a int
+	b string
+}
+
+func main() {
+	s1 := set.NewSet[int]()
+	s1.Add(17)
+	s2 := set.NewSet[int](4, 127, 3, 2)
+	s3 := set.NewSet(5.2, 5.2, 6.4)
+	s4 := set.NewSet("foo", "bar")
+	fmt.Println(s1, s2, s3, s4)
+	s1.Union(s2)
+	fmt.Println(s1)
+
+	s5 := s2.Copy()
+	fmt.Println("Equal: ", s1, s2, s2.Equal(s5), s5.Equal(s2), s2.Size(), s5.Size())
+	s2.Remove(4)
+	fmt.Println("Equal: ", s2.Equal(s5), s5.Equal(s2), s2.Size(), s5.Size())
+	s2.Add(5)
+	fmt.Println("Equal: ", s2.Equal(s5), s5.Equal(s2), s2.Size(), s5.Size())
+	s5.Remove(127)
+	fmt.Println("Equal: ", s2.Equal(s5), s5.Equal(s2), s2.Size(), s5.Size())
+	s2.Remove(5)
+	fmt.Println("Equal: ", s2.Equal(s5), s5.Equal(s2), s2.Size(), s5.Size())
+	fmt.Println(s2, s5)
+	s2.Intersection(s5)
+	fmt.Println(s2)
+
+	s6 := set.NewSet(foo{4, "a"}, foo{7, "b"})
+	s7 := set.NewSet(foo{4, "a"}, foo{8, "c"})
+	fmt.Println(s6, s7)
+	s6.Union(s7)
+	fmt.Println(s6, s7)
+	s6.Intersection(s7)
+	fmt.Println(s6, s7)
+}
