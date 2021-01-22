@@ -38,8 +38,10 @@ func main() {
 	s6 := set.NewSet(foo{4, "a"}, foo{7, "b"})
 	s7 := set.NewSet(foo{4, "a"}, foo{8, "c"})
 	fmt.Println(s6, s7)
+	s8 := s6.UnionCopy(s7)
 	s6.Union(s7)
-	fmt.Println(s6, s7)
+	fmt.Println(s6, s7, s8)
+	s9 := s6.IntersectionCopy(s7)
 	s6.Intersection(s7)
-	fmt.Println(s6, s7)
+	fmt.Println(s6, s7, s9)
 }

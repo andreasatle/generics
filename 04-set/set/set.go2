@@ -45,20 +45,34 @@ func (s Set[T]) Size() int {
 	return len(s)
 }
 
-// Union returns the in-place union of two sets.
+// Union computes the in-place union of two sets.
 func (s Set[T]) Union(t Set[T]) {
 	for v := range t {
 		s[v] = struct{}{}
 	}
 }
 
-// Intersection returns the in-place intersection of two sets.
+// UnionCopy returns the union of two sets.
+func (s Set[T]) UnionCopy(t Set[T]) Set[T] {
+	u := s.Copy()
+	u.Union(t)
+	return u
+}
+
+// Intersection computes the in-place intersection of two sets.
 func (s Set[T]) Intersection(t Set[T]) {
 	for v := range s {
 		if !t.Contains(v) {
 			s.Remove(v)
 		}
 	}
+}
+
+// IntersectionCopy returns the union of two sets.
+func (s Set[T]) IntersectionCopy(t Set[T]) Set[T] {
+	u := s.Copy()
+	u.Intersection(t)
+	return u
 }
 
 // Equal returns true if the sets are identical.
